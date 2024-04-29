@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta for the browser to have mobile first design -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+ 
+
+    <title> Gainesville Area Edible Plants </title>
+
+ <style>
+  html,
+  body,
+  #viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  margin-top: 16px;
+   }
+/* Styling for the record button */
+ .addRecordBtn {
+     position: inline-block;
+     z-index: 10;
+     top: 10px;
+     right: 10px;
+     background-color: #568203;
+      color: white;
+     padding: 8px 16px;
+     border: none;
+     border-radius: 4px;
+     font-size: 14px;
+     cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 20px;
+        }
+
+.addRecordBtn:hover {
+  background-color: #086e1d;
+}
+
+</style>
+
+<link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+<script src="https://js.arcgis.com/4.25/"></script>
+
+<script>
+require([ "esri/config","esri/Map", "esri/views/MapView", "esri/widgets/Locate", "esri/widgets/Search", "esri/layers/FeatureLayer", "esri/widgets/Legend"
+ ], (esriConfig, Map, MapView, Locate, Search, FeatureLayer, Legend) => {
+            
+     esriConfig.apiKey = "AAPK56e7de324d3341c386c7dbdcd2cf502e0zQZ_VUXJMF3xcUTtdvcYfLx57DnFCUGtbv7DDxH9DnnruoSzJF7xeEJ4Pk3GpBC";
+
+       const map = new Map({
+       basemap: "satellite"
+       });
+
+        const view = new MapView({
+         container: "viewDiv", // Mapview centered on Gainesville
+            map: map,
+            center: [-82.3268317, 29.6519881],
+            zoom: 13 
+            });
+
+            const locateBtn = new Locate({
+              view: view
+               });
+
+     // Added a locate widget to the top left corner of the view
+      view.ui.add(locateBtn, {
+      position: "top-left"
+        });
+
+        
+
+  const searchWidget = new Search({
+        view: view
+        });
+        // Adds the search widget in bottom left corner
+
+  view.ui.add(searchWidget, {
+          position: "top-right",
+         index: 2
+        });
+
+
+
+
+const ndvi = new FeatureLayer({ 
+   url: "https://naip.arcgis.com/arcgis/rest/services/NAIP/ImageServer",
+   
+})
+map.add(ndvi);
+
+const surveylayer = new FeatureLayer({ 
+  // Adding survey123 data to map
+   url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_aff246e636e644bbbdaecae26233d601/FeatureServer",
+   renderer: {
+    type: "simple", 
+    symbol: {
+      type: "simple-marker",  
+      color: [0, 255, 0],    
+      size: 10,             
+      outline: {
+        color: [255, 255, 255], 
+        width: 1             
+      }
+    }
+  },
+  popupTemplate: {
+    title: "Species", 
+    content: "Type: {species_common_name}" 
+  } 
+})
+map.add(surveylayer);
+
+
+//Adding legend
+const legend = new Legend({
+    view: view,
+    layerInfos: [
+        {
+            title: "Recent Report (post 2022)",
+            layer: recentdata 
+        },
+        {
+            title: "Moderately Recent Report (2019-2022)",
+            layer: middledata 
+        },
+      {title: "Old Report (Prior to 2019)",
+       layer: oldestdata}
+    ]
+    
+});
+
+//legend in bottom right
+view.ui.add(legend, "bottom-right");
+
+    });
+
+        </script>
+    
+
+</head>
+    <body>
+      <h1>Gainesville Area Edible Plants Map</h1>
+      <p>Add a record, or explore the edible plants in the Gainesville area using the interactive map below:</p>
+
+        <a href="https://arcg.is/0qi5Kj"target="_blank" class="addRecordBtn">Add Plant</a>
+        <div id="viewDiv"></div>
+    </body>
+</html>
