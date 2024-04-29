@@ -6,7 +6,7 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
  
 
-    <title> Gainesville Area Edible Plants </title>
+    <title> NDVI Map </title>
 
  <style>
   html,
@@ -91,61 +91,14 @@ const ndvi = new FeatureLayer({
 })
 map.add(ndvi);
 
-const surveylayer = new FeatureLayer({ 
-  // Adding survey123 data to map
-   url: "https://services.arcgis.com/LBbVDC0hKPAnLRpO/arcgis/rest/services/survey123_aff246e636e644bbbdaecae26233d601/FeatureServer",
-   renderer: {
-    type: "simple", 
-    symbol: {
-      type: "simple-marker",  
-      color: [0, 255, 0],    
-      size: 10,             
-      outline: {
-        color: [255, 255, 255], 
-        width: 1             
-      }
-    }
-  },
-  popupTemplate: {
-    title: "Species", 
-    content: "Type: {species_common_name}" 
-  } 
-})
-map.add(surveylayer);
 
-
-//Adding legend
-const legend = new Legend({
-    view: view,
-    layerInfos: [
-        {
-            title: "Recent Report (post 2022)",
-            layer: recentdata 
-        },
-        {
-            title: "Moderately Recent Report (2019-2022)",
-            layer: middledata 
-        },
-      {title: "Old Report (Prior to 2019)",
-       layer: oldestdata}
-    ]
-    
-});
-
-//legend in bottom right
-view.ui.add(legend, "bottom-right");
-
-    });
-
-        </script>
+   </script>
     
 
 </head>
     <body>
-      <h1>Gainesville Area Edible Plants Map</h1>
+      <h1>NDVI Map</h1>
       <p>Add a record, or explore the edible plants in the Gainesville area using the interactive map below:</p>
-
-        <a href="https://arcg.is/0qi5Kj"target="_blank" class="addRecordBtn">Add Plant</a>
         <div id="viewDiv"></div>
     </body>
 </html>
